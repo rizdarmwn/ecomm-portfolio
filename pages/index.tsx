@@ -1,14 +1,20 @@
 import type { NextPage } from "next";
+
 import Image from "next/image";
-import spacejellyCombo from "../public/images/spacejelly-combo.jpg";
 import products from "../products.json";
+import { useCart } from "../hooks/useCart";
+import Link from "next/link";
+
+// type IProducts = {
+//   quantity: number;
+//   id: string;
+// };
 
 const Home: NextPage = () => {
+  const { subTotal, totalItems, addToCart, checkout } = useCart();
+
   return (
     <>
-      <div className="navbar bg-base-100">
-        <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
-      </div>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-md">
@@ -25,12 +31,24 @@ const Home: NextPage = () => {
           return (
             <div key={id} className="card w-96 bg-base-100 shadow-xl">
               <figure>
-                <Image src={image} alt={title} width={400} height={400} />
+                <Link href={`/products/${id}`}>
+                  <a>
+                    <Image src={image} alt={title} width={400} height={400} />
+                  </a>
+                </Link>
               </figure>
               <div className="card-body">
                 <h2 className="card-title">{title}</h2>
                 <h2 className="font-bold">${price}</h2>
                 <p>{description}</p>
+                <div className="card-actions justify-end">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => addToCart({ id })}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             </div>
           );
